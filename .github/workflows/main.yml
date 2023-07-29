@@ -3,7 +3,7 @@ name: Build and Deploy
 on:
   push:
     branches:
-      - master
+      - main
 
 jobs:
   build:
@@ -21,21 +21,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Install lftp
-        run: sudo apt-get update && sudo apt-get install lftp -y
+      - name: Install FTP client
+        run: sudo apt-get update && sudo apt-get install -y curl
 
       - name: Deploy to Plesk via FTP
         env:
           FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
           FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
           FTP_HOST: testcicd.bajarangdecorators.com
-        working-directory: ./publish  # Set the working directory to the 'publish' folder
         run: |
-          lftp -c "
-          set ftp:ssl-allow no  # Use this line if FTPS is not required
-          open -u $FTP_USERNAME,$FTP_PASSWORD $FTP_HOST
-          mirror -R /testcicd.bajarangdecorators.com  # Change '/httpdocs' to the appropriate path on the Plesk server
-          "
+          curl -T ./publish/* ftp://$FTP_USERNAME:$FTP_PASSWORD@$FTP_HOST/
