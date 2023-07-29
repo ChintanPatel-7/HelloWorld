@@ -31,10 +31,10 @@ jobs:
         env:
           FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
           FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
-          FTP_HOST: your-ftp-host.com
+          FTP_HOST: testcicd.bajarangdecorators.com
         run: |
           lftp -c "
           set ftp:ssl-allow no  # Use this line if FTPS is not required
           open -u $FTP_USERNAME,$FTP_PASSWORD $FTP_HOST
-          mirror -R ./publish /httpdocs  # Change '/httpdocs' to the appropriate path on the Plesk server
+          mirror -R ./publish /testcicd.bajarangdecorators.com  # Change '/httpdocs' to the appropriate path on the Plesk server
           "
