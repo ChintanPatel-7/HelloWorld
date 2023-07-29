@@ -3,7 +3,7 @@ name: Build and Deploy
 on:
   push:
     branches:
-      - master
+      - main
 
 jobs:
   build:
@@ -28,6 +28,9 @@ jobs:
         env:
           FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
           FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
-          FTP_HOST: testcicd.bajarangdecorators.com
+          FTP_HOST: testcicd.bajarangdecorators.com/
         run: |
-          curl -T ./publish/* ftp://$FTP_USERNAME:$FTP_PASSWORD@$FTP_HOST/
+          cd ./publish
+          for file in *; do
+            curl -T $file ftp://$FTP_USERNAME:$FTP_PASSWORD@$FTP_HOST/
+          done
