@@ -30,7 +30,7 @@ jobs:
           FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
           FTP_HOST: testcicd.bajarangdecorators.com/
         run: |
-          cd ./publish
+          cd $GITHUB_WORKSPACE/publish
           for file in *; do
             curl -T $file ftp://$FTP_USERNAME:$FTP_PASSWORD@$FTP_HOST/
           done
